@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ArrowLeft, Search, Heart, X, RotateCcw, MapPin, Briefcase, Star, Info, MessageCircle, Users } from "lucide-react";
+import { ArrowLeft, Search, X, RotateCcw, MapPin, Briefcase, Star, Info, MessageCircle, Users, Link2 } from "lucide-react";
 import { mockProfiles, searchProfiles, Profile } from "@/data/mockProfiles";
 import { OnboardingData } from "./Onboarding";
 
@@ -20,6 +21,7 @@ interface SwipeInterfaceProps {
 const SwipeInterface = ({ userProfile, onBack, onMatch, onViewMatches, matchCount }: SwipeInterfaceProps) => {
   const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [allProfiles, setAllProfiles] = useState<Profile[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showWhyMatch, setShowWhyMatch] = useState(false);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
@@ -37,6 +39,7 @@ const SwipeInterface = ({ userProfile, onBack, onMatch, onViewMatches, matchCoun
       filteredProfiles = mockProfiles.filter(p => p.userIntent === 'contributor' || p.userIntent === 'browsing');
     }
     
+    setAllProfiles(filteredProfiles);
     setProfiles(filteredProfiles);
   }, [userProfile]);
 
@@ -44,20 +47,15 @@ const SwipeInterface = ({ userProfile, onBack, onMatch, onViewMatches, matchCoun
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
+    setCurrentProfileIndex(0);
+    
     if (query.trim()) {
-      const searchResults = searchProfiles(query, mockProfiles);
+      // Search within the filtered profiles based on user role
+      const searchResults = searchProfiles(query, allProfiles);
       setProfiles(searchResults);
-      setCurrentProfileIndex(0);
     } else {
       // Reset to original filtered profiles
-      let filteredProfiles = mockProfiles;
-      if (userProfile.role === 'contributor') {
-        filteredProfiles = mockProfiles.filter(p => p.userIntent === 'seeker' || p.userIntent === 'browsing');
-      } else if (userProfile.role === 'seeker') {
-        filteredProfiles = mockProfiles.filter(p => p.userIntent === 'contributor' || p.userIntent === 'browsing');
-      }
-      setProfiles(filteredProfiles);
-      setCurrentProfileIndex(0);
+      setProfiles(allProfiles);
     }
   };
 
@@ -84,7 +82,7 @@ const SwipeInterface = ({ userProfile, onBack, onMatch, onViewMatches, matchCoun
   const handleRefresh = () => {
     setCurrentProfileIndex(0);
     setSearchQuery("");
-    handleSearch("");
+    setProfiles(allProfiles);
   };
 
   const generateWhyMatch = () => {
@@ -300,9 +298,9 @@ const SwipeInterface = ({ userProfile, onBack, onMatch, onViewMatches, matchCoun
             variant="outline"
             size="lg"
             onClick={() => handleSwipe('right')}
-            className="w-16 h-16 rounded-full border-2 border-gray-300 hover:border-green-300 hover:bg-green-50"
+            className="w-16 h-16 rounded-full border-2 border-gray-300 hover:border-blue-300 hover:bg-blue-50"
           >
-            <Heart className="w-6 h-6 text-gray-600 hover:text-green-600" />
+            <Link2 className="w-6 h-6 text-gray-600 hover:text-blue-600" />
           </Button>
         </div>
 

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, MessageCircle, Sparkles, Heart } from "lucide-react";
+import { ArrowLeft, MessageCircle, Sparkles, Link2 } from "lucide-react";
 import { Profile } from "@/data/mockProfiles";
 
 interface MatchesScreenProps {
@@ -57,7 +57,7 @@ const MatchesScreen = ({ matches, onBack, onMessage }: MatchesScreenProps) => {
           <div className="space-y-4">
             <div className="text-center mb-6">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Heart className="w-5 h-5 text-pink-500" />
+                <Link2 className="w-5 h-5 text-blue-600" />
                 <span className="text-lg font-semibold">{matches.length} Professional Matches</span>
               </div>
               <p className="text-sm text-gray-600">

@@ -39,26 +39,6 @@ const LinkedInHomepage = ({ onLaunchLinker }: LinkedInHomepageProps) => {
 
       {/* Main Content */}
       <div className="pb-16">
-        {/* Profile Header */}
-        <div className="bg-white mb-2">
-          <div className="relative">
-            <div className="h-16 bg-gradient-to-r from-blue-600 to-blue-700"></div>
-            <div className="px-4 pb-4">
-              <div className="flex items-end -mt-8">
-                <Avatar className="w-16 h-16 border-4 border-white">
-                  <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop&crop=face" />
-                  <AvatarFallback>JD</AvatarFallback>
-                </Avatar>
-                <div className="ml-3 flex-1">
-                  <h2 className="font-semibold text-lg">John Doe</h2>
-                  <p className="text-sm text-gray-600">Software Engineer at TechCorp</p>
-                  <p className="text-xs text-gray-500">500+ connections</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Create Post */}
         <Card className="mb-2">
           <CardContent className="p-4">
@@ -237,7 +217,7 @@ const LinkedInHomepage = ({ onLaunchLinker }: LinkedInHomepageProps) => {
         </div>
       </div>
 
-      {/* Floating Linker Button - Like Meta AI in WhatsApp */}
+      {/* Floating Linker Button */}
       <Button
         onClick={onLaunchLinker}
         className="fixed bottom-20 right-4 w-14 h-14 rounded-full gradient-bg text-white border-0 shadow-lg z-50 hover:scale-105 transition-transform"
