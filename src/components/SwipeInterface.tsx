@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ArrowLeft, Search, Heart, X, RotateCcw, MapPin, Briefcase, Star, Info, MessageCircle } from "lucide-react";
+import { ArrowLeft, Search, Heart, X, RotateCcw, MapPin, Briefcase, Star, Info, MessageCircle, Users } from "lucide-react";
 import { mockProfiles, searchProfiles, Profile } from "@/data/mockProfiles";
 import { OnboardingData } from "./Onboarding";
 
@@ -14,9 +13,11 @@ interface SwipeInterfaceProps {
   userProfile: OnboardingData;
   onBack: () => void;
   onMatch: (profile: Profile) => void;
+  onViewMatches: () => void;
+  matchCount: number;
 }
 
-const SwipeInterface = ({ userProfile, onBack, onMatch }: SwipeInterfaceProps) => {
+const SwipeInterface = ({ userProfile, onBack, onMatch, onViewMatches, matchCount }: SwipeInterfaceProps) => {
   const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -133,7 +134,14 @@ const SwipeInterface = ({ userProfile, onBack, onMatch }: SwipeInterfaceProps) =
               Back
             </Button>
             <h1 className="text-xl font-bold">Linker</h1>
-            <div className="w-16" />
+            <Button variant="ghost" onClick={onViewMatches} className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              {matchCount > 0 && (
+                <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {matchCount}
+                </span>
+              )}
+            </Button>
           </div>
           
           <Card className="text-center p-8">
@@ -157,14 +165,21 @@ const SwipeInterface = ({ userProfile, onBack, onMatch }: SwipeInterfaceProps) =
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-md mx-auto pt-8">
-        {/* Header */}
+        {/* Header with Matches Button */}
         <div className="mb-6 flex items-center justify-between">
           <Button variant="ghost" onClick={onBack} className="flex items-center gap-2">
             <ArrowLeft className="w-4 h-4" />
             Back
           </Button>
           <h1 className="text-xl font-bold">Linker</h1>
-          <div className="w-16" />
+          <Button variant="ghost" onClick={onViewMatches} className="flex items-center gap-2 relative">
+            <Users className="w-4 h-4" />
+            {matchCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {matchCount}
+              </span>
+            )}
+          </Button>
         </div>
 
         {/* Search Bar */}

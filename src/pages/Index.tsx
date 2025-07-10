@@ -4,15 +4,17 @@ import LinkedInHomepage from "@/components/LinkedInHomepage";
 import Onboarding, { OnboardingData } from "@/components/Onboarding";
 import SwipeInterface from "@/components/SwipeInterface";
 import MatchScreen from "@/components/MatchScreen";
+import MatchesScreen from "@/components/MatchesScreen";
 import { Profile } from "@/data/mockProfiles";
 import { useToast } from "@/hooks/use-toast";
 
-type AppState = 'linkedin' | 'onboarding' | 'swiping' | 'match';
+type AppState = 'linkedin' | 'onboarding' | 'swiping' | 'match' | 'matches';
 
 const Index = () => {
   const [appState, setAppState] = useState<AppState>('linkedin');
   const [userProfile, setUserProfile] = useState<OnboardingData | null>(null);
   const [matchedProfile, setMatchedProfile] = useState<Profile | null>(null);
+  const [allMatches, setAllMatches] = useState<Profile[]>([]);
   const { toast } = useToast();
 
   const handleLaunchLinker = () => {
@@ -33,6 +35,7 @@ const Index = () => {
   const handleMatch = (profile: Profile) => {
     console.log("Match found:", profile);
     setMatchedProfile(profile);
+    setAllMatches(prev => [...prev, profile]);
     setAppState('match');
     toast({
       title: "It's a Match! 🎉",
@@ -51,10 +54,18 @@ const Index = () => {
     setMatchedProfile(null);
   };
 
-  const handleMessage = () => {
+  const handleViewMatches = () => {
+    setAppState('matches');
+  };
+
+  const handleBackToSwiping = () => {
+    setAppState('swiping');
+  };
+
+  const handleMessage = (profile?: Profile) => {
     toast({
       title: "Message Feature",
-      description: "Messaging feature would be implemented here in a real app",
+      description: `Starting conversation${profile ? ` with ${profile.name}` : ''}...`,
     });
   };
 
@@ -76,6 +87,16 @@ const Index = () => {
           userProfile={userProfile}
           onBack={handleBackToLinkedIn}
           onMatch={handleMatch}
+          onViewMatches={handleViewMatches}
+          matchCount={allMatches.length}
+        />
+      )}
+
+      {appState === 'matches' && (
+        <MatchesScreen
+          matches={allMatches}
+          onBack={handleBackToSwiping}
+          onMessage={handleMessage}
         />
       )}
       
@@ -83,7 +104,7 @@ const Index = () => {
         <MatchScreen 
           profile={matchedProfile}
           onContinue={handleContinueSwiping}
-          onMessage={handleMessage}
+          onMessage={() => handleMessage(matchedProfile)}
         />
       )}
     </div>
